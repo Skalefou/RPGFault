@@ -4,7 +4,7 @@
 RPGFault is a 2D platformer / RPG made in C ++ with the SFML 2.3 library.
 
 ### Where can I download it ?
-Actually, there isn't any finale release. We, sometimes, may drop beta executables here : [Releases](https://github.com/Skalefou/RPGFault/releases "Releases").
+Actually, there isn't any final release. We, sometimes, may drop beta executables here : [Releases](https://github.com/Skalefou/RPGFault/releases "Releases").
 
 ### When will it be finished ?
 We have no intention of rushing it, so we can't provide a date when it'll be finished.
@@ -12,7 +12,7 @@ We have no intention of rushing it, so we can't provide a date when it'll be fin
 With that being said, you must know that the game is early-developpment stage.
 
 ### Where can I talk with you ?
-You come on our discord server here at [Discord](https://discord.gg/gyHYNmn "Discord").
+You can come on our discord server here at [Discord](https://discord.gg/gyHYNmn "Discord").
 
 You must take a note tho, for the time being, the most majority of the members are french, so some may not speak english.
 
