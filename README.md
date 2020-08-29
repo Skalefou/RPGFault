@@ -1,7 +1,7 @@
 # RPGFault
 
 ### What is RPGFault ?
-RPGFault is a 2D platformer / RPG made in C ++ with the SFML 2.3 library.
+RPGFault is a 2D platformer / RPG made in C ++ with the SFML-2.5.1 library.
 
 ### Where can I download it ?
 Actually, there isn't any final release. We, sometimes, may drop beta executables here : [Releases](https://github.com/Skalefou/RPGFault/releases "Releases").
