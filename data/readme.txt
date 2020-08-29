@@ -1,0 +1,1 @@
+For now, all textures are placeholder
