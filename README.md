@@ -20,4 +20,5 @@ Moreover, actually the server is in early-stage too!
 
 ### How can I help ?
 You can try t find bug aand report them to us.
-If you know how to code, you can also do some push request if you can improve the game in some ways
+
+If you know how to code, you can also do some push request if you can improve the game in some ways.
