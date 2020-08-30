@@ -2,15 +2,16 @@
 #define SCREENSIZE_HPP
 #pragma once
 
+#include <SFML/Window.hpp>
 #include <SFML/Window/VideoMode.hpp>
 
 namespace rf {
-	class ScreenSize {
+	class Screen {
 	public:
 		static sf::VideoMode getScreenSize();
+		static void setFullscreen(sf::Window& window);
 	private:
 		static void divideResolution(sf::VideoMode& screenDesktop, const double divide);
-		double m_ratio;
 	};
 }
 
