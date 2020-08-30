@@ -12,7 +12,7 @@ We have no intention of rushing it, so we can't provide a date of when it'll be 
 With that being said, you must know that the game is early-developpment stage.
 
 ### Where can I talk with you ?
-You can come on our discord server here at [Discord](https://discord.gg/gyHYNmn "Discord").
+You can come on our discord server here on the [Server](https://discord.gg/gyHYNmn "Server").
 
 You must take a note tho, for the time being, the most majority of the members are french, so some may not speak english.
 
