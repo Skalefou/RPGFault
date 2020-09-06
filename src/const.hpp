@@ -3,5 +3,6 @@
 #pragma once
 
 constexpr char WINDOW_NAME[] = "RPGFault";
+enum {GRASS, WATER};
 
 #endif

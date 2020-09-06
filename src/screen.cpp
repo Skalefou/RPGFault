@@ -25,7 +25,7 @@ sf::VideoMode rf::Screen::getScreenSize() {
 	return screenDesktop;
 }
 
-void rf::Screen::setFullscreen(sf::Window& window) {
+void rf::Screen::setFullscreen(sf::RenderWindow& window) {
 	static bool fullscreen = false;
 	if (fullscreen)
 		window.create(rf::Screen::getScreenSize(), WINDOW_NAME, sf::Style::Close);
