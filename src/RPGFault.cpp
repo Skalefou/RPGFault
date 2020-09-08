@@ -11,10 +11,6 @@ int main(void) {
 	bool fullscreenWait = true;
 	TileRPG tileRPG;
 
-	window.clear(sf::Color::Black);
-	tileRPG.draw(WATER, 10.f, 15.f, window);
-	window.display();
-
 	window.setVerticalSyncEnabled(true);
 	while (window.isOpen()) {
 		sf::sleep(sf::microseconds(16'666));

@@ -23,7 +23,8 @@ TileRPG::TileRPG() {
 		m_sprite.push_back(sprite);
 		access = "data/" + line;
 		m_texture[i].loadFromFile(access);
-		m_sprite[i].setTexture(m_texture[i]);
 		i++;
 	}
+	for(int y = 0; y < i; y++)
+		m_sprite[y].setTexture(m_texture[y]);
 }
