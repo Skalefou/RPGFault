@@ -10,10 +10,12 @@ int main(void) {
 	sf::RenderWindow window(rf::Screen::getScreenSize(), WINDOW_NAME, sf::Style::Close);
 	bool fullscreenWait = true;
 	TileRPG tileRPG;
+	sf::View view(sf::FloatRect(0, 0, VIEW_X, VIEW_Y));
 
 	window.setVerticalSyncEnabled(true);
 	while (window.isOpen()) {
 		sf::sleep(sf::microseconds(16'666));
+		window.clear(sf::Color::Black);
 		sf::Event event;
 		while (window.pollEvent(event)) {
 			switch (event.type) {
@@ -36,6 +38,8 @@ int main(void) {
 			fullscreenWait = false;
 		}
 
+		window.setView(view);
+		window.display();
 	}
 	return 0;
 }
