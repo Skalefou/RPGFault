@@ -1,41 +1,38 @@
-#include <SFML/Window.hpp>
+#include <iostream>
 #include "screen.hpp"
-#include "const.hpp"
 
-sf::VideoMode rf::Screen::getScreenSize() {
-	sf::VideoMode screenDesktop { sf::VideoMode::getDesktopMode() };
+Screen::Screen() : m_fullscreen(false), m_colorBackground(0, 0, 0, 255)
+{
 
-	switch (screenDesktop.width) {
-		case 4096:
-			divideResolution(screenDesktop, 1.6);
-			break;
-		case 2560:
-			divideResolution(screenDesktop, 1.3333);
-			break;
-		case 1920:
-			divideResolution(screenDesktop, 1.5);
-			break;
-		case 1280:
-			divideResolution(screenDesktop, 2);
-			break;
-		default:
-			divideResolution(screenDesktop, 1.5);
-			break;
+}
+
+bool Screen::isFullscreen() const
+{
+	return m_fullscreen;
+}
+
+void Screen::changeFullScreen(sf::RenderWindow& window)
+{
+	static bool f11Press = false;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11) && !f11Press)
+	{
+		m_fullscreen = !m_fullscreen;
+		f11Press = true;
+		if(m_fullscreen)
+			window.create(sf::VideoMode(1280, 720), WINDOW_NAME, sf::Style::Close);
+		else
+			window.create(sf::VideoMode::getDesktopMode(), WINDOW_NAME, sf::Style::Fullscreen);
 	}
-	return screenDesktop;
+	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::F11) && f11Press)
+		f11Press = false;
 }
 
-void rf::Screen::setFullscreen(sf::RenderWindow& window) {
-	static bool fullscreen = false;
-	if (fullscreen)
-		window.create(rf::Screen::getScreenSize(), WINDOW_NAME, sf::Style::Close);
-	else 
-		window.create(sf::VideoMode::getDesktopMode(), WINDOW_NAME, sf::Style::Fullscreen);
-	fullscreen = !fullscreen;
+sf::Color Screen::colorBackground() const
+{
+	return m_colorBackground;
 }
 
-void rf::Screen::divideResolution(sf::VideoMode& screenDesktop, const double divide) {
-	double width = screenDesktop.width / divide, height = screenDesktop.height / divide;
-	screenDesktop.width = (unsigned int)width;
-	screenDesktop.height = (unsigned int)height;
+void Screen::changeColorBackground(sf::Color color)
+{
+	m_colorBackground = color;
 }
