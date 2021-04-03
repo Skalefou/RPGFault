@@ -1,7 +1,7 @@
 #include <iostream>
 #include "screen.hpp"
 
-Screen::Screen() : m_fullscreen(false) 
+Screen::Screen() : m_fullscreen(false), m_colorBackground(0, 0, 0, 255)
 {
 
 }
@@ -14,7 +14,8 @@ bool Screen::isFullscreen() const
 void Screen::changeFullScreen(sf::RenderWindow& window)
 {
 	static bool f11Press = false;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11) && !f11Press) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11) && !f11Press)
+	{
 		m_fullscreen = !m_fullscreen;
 		f11Press = true;
 		if(m_fullscreen)
@@ -24,4 +25,14 @@ void Screen::changeFullScreen(sf::RenderWindow& window)
 	}
 	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::F11) && f11Press)
 		f11Press = false;
+}
+
+sf::Color Screen::colorBackground() const
+{
+	return m_colorBackground;
+}
+
+void Screen::changeColorBackground(sf::Color color)
+{
+	m_colorBackground = color;
 }

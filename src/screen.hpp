@@ -10,10 +10,12 @@ class Screen
 public:
 	Screen();
 	bool isFullscreen() const; //Returns true, if the user's window is full screen
-	void changeFullScreen(sf::RenderWindow& window); // activate/deactivate fullscreen 
+	void changeFullScreen(sf::RenderWindow& window); // activate/deactivate fullscreen
+	sf::Color colorBackground() const;
+	void changeColorBackground(sf::Color color);
 private:
 	bool m_fullscreen;
-
+	sf::Color m_colorBackground;
 };
 
 #endif
