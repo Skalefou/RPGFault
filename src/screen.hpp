@@ -1,21 +1,19 @@
-#ifndef SCREEN_HPP
-#define SCREEN_HPP
+#ifndef SCREENSIZE_HPP
+#define SCREENSIZE_HPP
 #pragma once
 
+#include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
-#include "const.hpp"
+#include <SFML/Window/VideoMode.hpp>
 
-class Screen
-{
-public:
-	Screen();
-	bool isFullscreen() const; //Returns true, if the user's window is full screen
-	void changeFullScreen(sf::RenderWindow& window); // activate/deactivate fullscreen
-	sf::Color colorBackground() const;
-	void changeColorBackground(sf::Color color);
-private:
-	bool m_fullscreen;
-	sf::Color m_colorBackground;
-};
+namespace rf {
+	class Screen {
+	public:
+		static sf::VideoMode getScreenSize();
+		static void setFullscreen(sf::RenderWindow& window);
+	private:
+		static void divideResolution(sf::VideoMode& screenDesktop, const double divide);
+	};
+}
 
 #endif
