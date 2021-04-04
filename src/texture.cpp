@@ -1,19 +1,13 @@
 #include "texture.hpp"
 
-
-TextureAll::TextureAll(std::string tileFile)
-{
-	tile.init(tileFile);
-}
-
-unsigned int Texture::init(std::string fileAccess)
+Texture::Texture(std::string fileAccess)
 {
 	std::ifstream file{ fileAccess };
 	std::string line{ "" }, access{ "" };
 	sf::Texture texture;
 	sf::Sprite sprite;
 
-	while (std::getline(file, line)) 
+	while (std::getline(file, line))
 	{
 		m_texture.push_back(texture);
 		m_sprite.push_back(sprite);
@@ -25,8 +19,6 @@ unsigned int Texture::init(std::string fileAccess)
 	}
 	for (unsigned int y = 0; y < m_numberOfTexture; y++)
 		m_sprite[y].setTexture(m_texture[y]);
-
-	return 0;
 }
 
 std::string Texture::nameInit(std::string line, const char firstCharacter, const char lastCharacter) const
@@ -60,4 +52,14 @@ void Texture::draw(unsigned int id, float x, float y, sf::RenderWindow& window)
 {
 	m_sprite[id].setPosition(sf::Vector2f(x, y));
 	window.draw(m_sprite[id]);
+}
+
+unsigned int Texture::ascendNumberOfTexture() const
+{
+	return m_numberOfTexture;
+}
+
+sf::FloatRect Texture::ascendSize(unsigned int id) const
+{
+	return m_sprite[id].getGlobalBounds();
 }

@@ -8,7 +8,7 @@ int main(void)
 	sf::RenderWindow window(sf::VideoMode(1280, 720), WINDOW_NAME, sf::Style::Close);
 	Screen screen;
 	Inventory inventory;
-	TextureAll texture("data/tileRPGList.rf");
+	Texture tileTexture("data/tileRPGList.rf");
 	sf::View view(sf::FloatRect(0, 0, 1920, 1080));
 
 	window.setVerticalSyncEnabled(true);
@@ -27,7 +27,7 @@ int main(void)
 			window.close();
 		
 		screen.changeFullScreen(window);
-		inventory.inventoryMain(screen);
+		inventory.inventoryMain(screen, window, tileTexture);
 
 		window.setView(view);
 		window.display();
