@@ -7,7 +7,7 @@ int main(void)
 {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), WINDOW_NAME, sf::Style::Close);
 	Screen screen;
-	Inventory inventory;
+	Inventory inventory("data/Pixeled.ttf");
 	Texture tileTexture("data/tileRPGList.rf");
 	sf::View view(sf::FloatRect(0, 0, 1920, 1080));
 
@@ -35,3 +35,5 @@ int main(void)
 
 	return 0;
 }
+
+//TODO: Adding a loading screen 

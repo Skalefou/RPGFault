@@ -1,8 +1,17 @@
 #include "inventory.hpp"
+#include <sstream>
+#include <iostream>
 
-Inventory::Inventory() : m_inventory(false), m_page(0)
+
+Inventory::Inventory(std::string fontFile) : m_inventory(false), m_page(0), m_selector(-1)
 {
-
+	m_font.loadFromFile(fontFile);
+	m_textNameTexture.setFont(m_font);
+	m_textPage.setFont(m_font);
+	m_textNameTexture.setCharacterSize(16);
+	m_textPage.setCharacterSize(48);
+	m_textPage.setString("Page : 0");
+	m_textPage.setPosition(sf::Vector2f(((1920/2) - (m_textPage.getGlobalBounds().width/2)), (1080 - m_textPage.getGlobalBounds().height)));
 }
 
 void Inventory::changeInventory(Screen &screen)
@@ -24,6 +33,50 @@ void Inventory::changeInventory(Screen &screen)
 	}
 	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::E) && ePress)
 		ePress = false;
+}
+
+void Inventory::changeTextPage()
+{
+	std::string text = "Page : ";
+	std::ostringstream oss;
+	oss << text << m_page;
+	m_textPage.setString(oss.str());
+}
+
+void Inventory::changePage(Texture& tileTexture)
+{
+	static unsigned int i = 5;
+	if (i >= 10)
+	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && tileTexture.ascendNumberOfTexture() > ((m_page + 1) * 28 * 12))
+		{
+			m_page++;
+			changeTextPage();
+			i = 0;
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && m_page > 0)
+		{
+			m_page--;
+			changeTextPage();
+			i = 0;
+		}
+	}
+	i++;
+}
+
+signed int Inventory::collisionMouseTexture(Texture& tileTexture, sf::RenderWindow& window) const
+{
+	sf::Vector2i localPosition = sf::Mouse::getPosition(window);
+	sf::Vector2f mousePosition = window.mapPixelToCoords(localPosition);
+	for (signed int y = 0; y < 12; y++)
+		for (signed int x = 0; x < 28; x++)
+			if ((mousePosition.x >= ((x * 64) + 64))
+				&& (mousePosition.x <= ((x * 64) + 64 + 32))
+				&& (mousePosition.y >= ((y * 64) + 64))
+				&& (mousePosition.y <= ((y * 64) + 64 + 32))
+				&& (tileTexture.ascendNumberOfTexture() > (m_page * 28 * 12) + x + (y * 28)))
+					return ((m_page * 28 * 12) + x + (y * 28));
+	return -1;
 }
 
 unsigned int Inventory::limitTileDraw(Texture &tileTexture) const
@@ -57,7 +110,9 @@ void Inventory::inventoryMain(Screen& screen, sf::RenderWindow& window, Texture&
 	changeInventory(screen);
 	if (m_inventory)
 	{
+		changePage(tileTexture);
 		drawTile(window, tileTexture);
-
+		window.draw(m_textPage);
+		std::cout << collisionMouseTexture(tileTexture, window) << std::endl;
 	}
 }
