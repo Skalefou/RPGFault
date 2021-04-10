@@ -6,10 +6,10 @@
 int main(void) 
 {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), WINDOW_NAME, sf::Style::Close);
-	Screen screen;
+	sf::View view(sf::FloatRect(0, 0, 1920, 1080));
+	Screen screen(window, "data/Pixeled.ttf", view);
 	Inventory inventory("data/Pixeled.ttf");
 	Texture tileTexture("data/tileRPGList.rf");
-	sf::View view(sf::FloatRect(0, 0, 1920, 1080));
 
 	window.setVerticalSyncEnabled(true);
 	while (window.isOpen()) 
@@ -34,6 +34,4 @@ int main(void)
 	}
 
 	return 0;
-}
-
-//TODO: Adding a loading screen 
+} 

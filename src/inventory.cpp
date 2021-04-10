@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-Inventory::Inventory(std::string fontFile) : m_inventory(false), m_page(0), m_selector(-1)
+Inventory::Inventory(std::string fontFile) : m_inventory(false), m_page(0), m_selector(-1), m_releaseMouse(false)
 {
 	m_font.loadFromFile(fontFile);
 	m_textNameTexture.setFont(m_font);
@@ -79,6 +79,19 @@ signed int Inventory::collisionMouseTexture(Texture& tileTexture, sf::RenderWind
 	return -1;
 }
 
+void Inventory::clickMouse(Texture &tileTexture, sf::RenderWindow& window)
+{
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		m_releaseMouse = true;
+	if (m_releaseMouse == true && !(sf::Mouse::isButtonPressed(sf::Mouse::Left)))
+	{
+		signed int idTexture = collisionMouseTexture(tileTexture, window);
+		if (idTexture >= 0)
+			m_selector = idTexture;
+		m_releaseMouse = false;
+	}
+}
+
 unsigned int Inventory::limitTileDraw(Texture &tileTexture) const
 {
 	unsigned int r = ((m_page+1) * 28 * 12);
@@ -87,7 +100,7 @@ unsigned int Inventory::limitTileDraw(Texture &tileTexture) const
 	return r;
 }
 
-void Inventory::drawTile(sf::RenderWindow& window, Texture& tileTexture) const
+void Inventory::drawTile(Texture& tileTexture, sf::RenderWindow& window) const
 {
 	float x = 32, y = 64;
 	for (unsigned int numberOfTexture = (m_page*28*12); numberOfTexture < limitTileDraw(tileTexture); numberOfTexture++)
@@ -111,8 +124,12 @@ void Inventory::inventoryMain(Screen& screen, sf::RenderWindow& window, Texture&
 	if (m_inventory)
 	{
 		changePage(tileTexture);
-		drawTile(window, tileTexture);
+		drawTile(tileTexture, window);
+		clickMouse(tileTexture, window);
 		window.draw(m_textPage);
-		std::cout << collisionMouseTexture(tileTexture, window) << std::endl;
+		
 	}
 }
+
+//TODO: Display selector
+//TODO: Show cursor texture name 

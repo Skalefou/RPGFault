@@ -1,8 +1,18 @@
-#include <iostream>
 #include "screen.hpp"
 
-Screen::Screen() : m_fullscreen(false), m_colorBackground(0, 0, 0, 255)
+Screen::Screen(sf::RenderWindow& window, std::string nameFileFont, sf::View& view) : m_fullscreen(false), m_colorBackground(0, 0, 0, 255)
 {
+	sf::Font font;
+	sf::Text text;
+	window.setView(view);
+	font.loadFromFile(nameFileFont);
+	text.setFont(font);
+	text.setString("Loading...");
+	text.setCharacterSize(32);
+	text.setPosition(sf::Vector2f(((1920 / 2) - (text.getGlobalBounds().width / 2)), ((1080 / 2) - (text.getGlobalBounds().height / 2))));
+	window.clear(sf::Color::Black);
+	window.draw(text);
+	window.display();
 
 }
 

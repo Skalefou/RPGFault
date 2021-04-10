@@ -13,13 +13,14 @@ public:
 	void changeInventory(Screen &screen);
 	void changePage(Texture &tileTexture);
 	unsigned int limitTileDraw(Texture& tileTexture) const;
-	void drawTile(sf::RenderWindow &window, Texture &tileTexture) const;
+	void drawTile(Texture& tileTexture, sf::RenderWindow& window) const;
 	void changeTextPage();
+	void clickMouse(Texture& tileTexture, sf::RenderWindow& window);
 	signed int collisionMouseTexture(Texture& tileTexture, sf::RenderWindow& window) const;
 	void inventoryMain(Screen &screen, sf::RenderWindow& window, Texture &tileTexture);
 	
 private:
-	bool m_inventory;
+	bool m_inventory, m_releaseMouse;
 	unsigned int m_page;
 	signed int m_selector;
 	sf::Font m_font;
