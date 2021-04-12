@@ -13,6 +13,7 @@ public:
 	Texture(std::string fileAccess);
 	unsigned int init(std::string fileAccess);
 	std::string nameInit(std::string line, const char firstCharacter, const char lastCharacter) const;
+	std::string ascendName(unsigned int id) const;
 	void draw(unsigned int id, float x, float y, sf::RenderWindow& window);
 	unsigned int ascendNumberOfTexture() const;
 	sf::FloatRect ascendSize(unsigned int id) const;

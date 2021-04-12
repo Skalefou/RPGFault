@@ -48,6 +48,11 @@ std::string Texture::nameInit(std::string line, const char firstCharacter, const
 	return line;
 }
 
+std::string Texture::ascendName(unsigned int id) const
+{
+	return m_name[id];
+}
+
 void Texture::draw(unsigned int id, float x, float y, sf::RenderWindow& window)
 {
 	m_sprite[id].setPosition(sf::Vector2f(x, y));

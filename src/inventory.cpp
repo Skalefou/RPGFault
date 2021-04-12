@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-Inventory::Inventory(std::string fontFile) : m_inventory(false), m_page(0), m_selector(-1), m_releaseMouse(false)
+Inventory::Inventory(std::string fontFile) : m_inventory(false), m_page(0), m_selector(-1), m_releaseMouse(false), m_selectorMouse(-1)
 {
 	m_font.loadFromFile(fontFile);
 	m_textNameTexture.setFont(m_font);
@@ -12,6 +12,9 @@ Inventory::Inventory(std::string fontFile) : m_inventory(false), m_page(0), m_se
 	m_textPage.setCharacterSize(48);
 	m_textPage.setString("Page : 0");
 	m_textPage.setPosition(sf::Vector2f(((1920/2) - (m_textPage.getGlobalBounds().width/2)), (1080 - m_textPage.getGlobalBounds().height)));
+	m_textSelector.setFont(m_font);
+	m_textPage.setCharacterSize(48);
+	m_textCursor.setFont(m_font);
 }
 
 void Inventory::changeInventory(Screen &screen)
@@ -24,6 +27,8 @@ void Inventory::changeInventory(Screen &screen)
 		{
 			sf::Color color(128, 128, 128, 128);
 			screen.changeColorBackground(color);
+			m_page = 0;
+			changeTextPage();
 		}
 		else
 		{
@@ -81,13 +86,16 @@ signed int Inventory::collisionMouseTexture(Texture& tileTexture, sf::RenderWind
 
 void Inventory::clickMouse(Texture &tileTexture, sf::RenderWindow& window)
 {
+	m_selectorMouse = collisionMouseTexture(tileTexture, window);
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		m_releaseMouse = true;
 	if (m_releaseMouse == true && !(sf::Mouse::isButtonPressed(sf::Mouse::Left)))
 	{
-		signed int idTexture = collisionMouseTexture(tileTexture, window);
-		if (idTexture >= 0)
-			m_selector = idTexture;
+		if (m_selectorMouse >= 0)
+		{
+			m_selector = m_selectorMouse;
+			changeTextSelector(tileTexture);
+		}
 		m_releaseMouse = false;
 	}
 }
@@ -98,6 +106,12 @@ unsigned int Inventory::limitTileDraw(Texture &tileTexture) const
 	if (tileTexture.ascendNumberOfTexture() < r)
 		r = tileTexture.ascendNumberOfTexture();
 	return r;
+}
+
+void Inventory::changeTextSelector(Texture& tileTexture)
+{
+	m_textSelector.setString(tileTexture.ascendName(m_selector));
+	m_textSelector.setPosition(sf::Vector2f((30 + 10 + tileTexture.ascendSize(m_selector).width) ,((1080 - 30) - m_textSelector.getGlobalBounds().height)));
 }
 
 void Inventory::drawTile(Texture& tileTexture, sf::RenderWindow& window) const
@@ -112,10 +126,22 @@ void Inventory::drawTile(Texture& tileTexture, sf::RenderWindow& window) const
 		}
 		else
 			x += 32;
-
 		tileTexture.draw(numberOfTexture, x, y, window);
 		x += 32;
 	}
+}
+
+void Inventory::drawCursor(Texture& tileTexture, sf::RenderWindow& window)
+{
+	m_textCursor.setString(tileTexture.ascendName(m_selectorMouse));
+	m_textCursor.setPosition(sf::Vector2f((1920 - 20 - m_textCursor.getGlobalBounds().width), (1080 - m_textCursor.getGlobalBounds().height - 30)));
+	window.draw(m_textCursor);
+}
+
+void Inventory::displaySelector(sf::RenderWindow& window, Texture &tileTexture)
+{
+	tileTexture.draw(m_selector, 30.f, (1080 - tileTexture.ascendSize(m_selector).height - 30), window);
+	window.draw(m_textSelector);
 }
 
 void Inventory::inventoryMain(Screen& screen, sf::RenderWindow& window, Texture& tileTexture)
@@ -126,10 +152,11 @@ void Inventory::inventoryMain(Screen& screen, sf::RenderWindow& window, Texture&
 		changePage(tileTexture);
 		drawTile(tileTexture, window);
 		clickMouse(tileTexture, window);
+
+		if (m_selector >= 0)
+			displaySelector(window, tileTexture);
+		if (m_selectorMouse >= 0)
+			drawCursor(tileTexture, window);
 		window.draw(m_textPage);
-		
 	}
 }
-
-//TODO: Display selector
-//TODO: Show cursor texture name 
