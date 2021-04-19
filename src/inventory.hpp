@@ -9,17 +9,19 @@
 class Inventory 
 {
 public:
-	Inventory(std::string fontFile);
+	Inventory(const std::string fontFile);
 	void changeInventory(Screen &screen);
-	void changePage(Texture &tileTexture);
-	unsigned int limitTileDraw(Texture& tileTexture) const;
-	void changeTextSelector(Texture &tileTexture);
+	void changePage(const Texture &tileTexture);
+	unsigned int limitTileDraw(const Texture& tileTexture) const;
+	signed int ascendSelector() const;
+	bool ascendInventoryOn() const;
+	void changeTextSelector(const Texture &tileTexture);
 	void drawTile(Texture& tileTexture, sf::RenderWindow& window) const;
-	void drawCursor(Texture& tileTexture, sf::RenderWindow& window);
+	void drawCursor(const Texture& tileTexture, sf::RenderWindow& window);
 	void displaySelector(sf::RenderWindow& window, Texture& tileTexture);
 	void changeTextPage();
-	void clickMouse(Texture& tileTexture, sf::RenderWindow& window);
-	signed int collisionMouseTexture(Texture& tileTexture, sf::RenderWindow& window) const;
+	void clickMouse(const Texture& tileTexture, sf::RenderWindow& window);
+	signed int collisionMouseTexture(const Texture& tileTexture, sf::RenderWindow& window) const;
 	void inventoryMain(Screen& screen, sf::RenderWindow& window, Texture& tileTexture);
 private:
 	bool m_inventory, m_releaseMouse;

@@ -9,11 +9,11 @@
 class Screen
 {
 public:
-	Screen(sf::RenderWindow &window, std::string nameFileFont, sf::View &view);
+	Screen(sf::RenderWindow &window, const std::string nameFileFont, sf::View &view);
 	bool isFullscreen() const; //Returns true, if the user's window is full screen
 	void changeFullScreen(sf::RenderWindow& window); // activate/deactivate fullscreen
 	sf::Color colorBackground() const;
-	void changeColorBackground(sf::Color color);
+	void changeColorBackground(const sf::Color color);
 private:
 	bool m_fullscreen;
 	sf::Color m_colorBackground;

@@ -1,6 +1,6 @@
 #include "texture.hpp"
 
-Texture::Texture(std::string fileAccess)
+Texture::Texture(const std::string fileAccess)
 {
 	std::ifstream file{ fileAccess };
 	std::string line{ "" }, access{ "" };
@@ -48,12 +48,12 @@ std::string Texture::nameInit(std::string line, const char firstCharacter, const
 	return line;
 }
 
-std::string Texture::ascendName(unsigned int id) const
+std::string Texture::ascendName(const unsigned int id) const
 {
 	return m_name[id];
 }
 
-void Texture::draw(unsigned int id, float x, float y, sf::RenderWindow& window)
+void Texture::draw(const unsigned int id, const float x, const float y, sf::RenderWindow& window)
 {
 	m_sprite[id].setPosition(sf::Vector2f(x, y));
 	window.draw(m_sprite[id]);
@@ -64,7 +64,7 @@ unsigned int Texture::ascendNumberOfTexture() const
 	return m_numberOfTexture;
 }
 
-sf::FloatRect Texture::ascendSize(unsigned int id) const
+sf::FloatRect Texture::ascendSize(const unsigned int id) const
 {
 	return m_sprite[id].getGlobalBounds();
 }

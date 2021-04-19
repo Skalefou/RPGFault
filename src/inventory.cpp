@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-Inventory::Inventory(std::string fontFile) : m_inventory(false), m_page(0), m_selector(-1), m_releaseMouse(false), m_selectorMouse(-1)
+Inventory::Inventory(const std::string fontFile) : m_inventory(false), m_page(0), m_selector(-1), m_releaseMouse(false), m_selectorMouse(-1)
 {
 	m_font.loadFromFile(fontFile);
 	m_textNameTexture.setFont(m_font);
@@ -48,7 +48,7 @@ void Inventory::changeTextPage()
 	m_textPage.setString(oss.str());
 }
 
-void Inventory::changePage(Texture& tileTexture)
+void Inventory::changePage(const Texture& tileTexture)
 {
 	static unsigned int i = 5;
 	if (i >= 10)
@@ -69,7 +69,7 @@ void Inventory::changePage(Texture& tileTexture)
 	i++;
 }
 
-signed int Inventory::collisionMouseTexture(Texture& tileTexture, sf::RenderWindow& window) const
+signed int Inventory::collisionMouseTexture(const Texture& tileTexture, sf::RenderWindow& window) const
 {
 	sf::Vector2i localPosition = sf::Mouse::getPosition(window);
 	sf::Vector2f mousePosition = window.mapPixelToCoords(localPosition);
@@ -84,7 +84,7 @@ signed int Inventory::collisionMouseTexture(Texture& tileTexture, sf::RenderWind
 	return -1;
 }
 
-void Inventory::clickMouse(Texture &tileTexture, sf::RenderWindow& window)
+void Inventory::clickMouse(const Texture &tileTexture, sf::RenderWindow& window)
 {
 	m_selectorMouse = collisionMouseTexture(tileTexture, window);
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -100,7 +100,7 @@ void Inventory::clickMouse(Texture &tileTexture, sf::RenderWindow& window)
 	}
 }
 
-unsigned int Inventory::limitTileDraw(Texture &tileTexture) const
+unsigned int Inventory::limitTileDraw(const Texture &tileTexture) const
 {
 	unsigned int r = ((m_page+1) * 28 * 12);
 	if (tileTexture.ascendNumberOfTexture() < r)
@@ -108,13 +108,23 @@ unsigned int Inventory::limitTileDraw(Texture &tileTexture) const
 	return r;
 }
 
-void Inventory::changeTextSelector(Texture& tileTexture)
+signed int Inventory::ascendSelector() const
+{
+	return m_selector;
+}
+
+bool Inventory::ascendInventoryOn() const
+{
+	return m_inventory;
+}
+
+void Inventory::changeTextSelector(const Texture& tileTexture)
 {
 	m_textSelector.setString(tileTexture.ascendName(m_selector));
 	m_textSelector.setPosition(sf::Vector2f((30 + 10 + tileTexture.ascendSize(m_selector).width) ,((1080 - 30) - m_textSelector.getGlobalBounds().height)));
 }
 
-void Inventory::drawTile(Texture& tileTexture, sf::RenderWindow& window) const
+void Inventory::drawTile( Texture& tileTexture, sf::RenderWindow& window) const
 {
 	float x = 32, y = 64;
 	for (unsigned int numberOfTexture = (m_page*28*12); numberOfTexture < limitTileDraw(tileTexture); numberOfTexture++)
@@ -131,7 +141,7 @@ void Inventory::drawTile(Texture& tileTexture, sf::RenderWindow& window) const
 	}
 }
 
-void Inventory::drawCursor(Texture& tileTexture, sf::RenderWindow& window)
+void Inventory::drawCursor(const Texture& tileTexture, sf::RenderWindow& window)
 {
 	m_textCursor.setString(tileTexture.ascendName(m_selectorMouse));
 	m_textCursor.setPosition(sf::Vector2f((1920 - 20 - m_textCursor.getGlobalBounds().width), (1080 - m_textCursor.getGlobalBounds().height - 30)));

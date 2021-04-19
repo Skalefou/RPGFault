@@ -1,6 +1,6 @@
 #include "screen.hpp"
 
-Screen::Screen(sf::RenderWindow& window, std::string nameFileFont, sf::View& view) : m_fullscreen(false), m_colorBackground(0, 0, 0, 255)
+Screen::Screen(sf::RenderWindow& window, const std::string nameFileFont, sf::View& view) : m_fullscreen(false), m_colorBackground(0, 0, 0, 255)
 {
 	sf::Font font;
 	sf::Text text;
@@ -42,7 +42,7 @@ sf::Color Screen::colorBackground() const
 	return m_colorBackground;
 }
 
-void Screen::changeColorBackground(sf::Color color)
+void Screen::changeColorBackground(const sf::Color color)
 {
 	m_colorBackground = color;
 }
