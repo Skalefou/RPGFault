@@ -1,5 +1,4 @@
 #include "map.hpp"
-#include <iostream>
 
 Map::Map() : scrollingX(0), scrollingY(0), m_LimitMapX(0), m_LimitMapY(0)
 {
@@ -17,16 +16,31 @@ sf::Vector2f Map::mousePositionWithScrolling(const sf::Vector2i localPosition, s
 void Map::PlaceTile(const signed int idSelector, sf::RenderWindow& window)
 {
 	const sf::Vector2f mousePosition = mousePositionWithScrolling(sf::Mouse::getPosition(window), window);
-	if ((unsigned int)(mousePosition.x / 32) > m_LimitMapX || (unsigned int)(mousePosition.y / 32) > m_LimitMapY)
+	const bool x = ((unsigned int)(mousePosition.x / 32) >= m_LimitMapX), y = ((unsigned int)(mousePosition.y / 32) >= m_LimitMapY), limitMouse = (mousePosition.x >= 0 && mousePosition.y >= 0 && mousePosition.x < 1920 && mousePosition.y < 1080);
+	if (limitMouse && (x || y))
 	{
-		const unsigned int differenceX = (unsigned int)((mousePosition.x / 32) - m_LimitMapX), differenceY = (unsigned int)((mousePosition.y / 32) - m_LimitMapY);
-		m_map.resize(m_LimitMapX + differenceX);
-		for (unsigned int x = 0; x < m_map.size(); x++)
-			m_map[x].resize((m_LimitMapY + differenceY), -1);
-		m_LimitMapX += differenceX;
-		m_LimitMapY += differenceY;
+		const unsigned int differenceX = ((unsigned int)(mousePosition.x / 32) + 1 - m_LimitMapX), differenceY = ((unsigned int)(mousePosition.y / 32) + 1 - m_LimitMapY);
+		if (x)
+		{
+			for (unsigned int x = m_LimitMapX; x < m_LimitMapX + differenceX; x++)
+			{
+				m_map.push_back(std::vector<signed int>());
+				if (m_LimitMapY > 0)
+					for (unsigned int y = 0; y < m_LimitMapY; y++)
+						m_map[x].push_back(-1);
+			}
+			m_LimitMapX += differenceX;
+		}
+		if (y)
+		{
+			for (unsigned int x = 0; x < std::size(m_map); x++)
+				for (unsigned int y = m_LimitMapY; y < m_LimitMapY + differenceY; y++)
+					m_map[x].push_back(-1);
+			m_LimitMapY += differenceY;
+		}
 	}
-	m_map[((unsigned int)(mousePosition.x / 32)) - 1][((unsigned int)(mousePosition.y / 32)) - 1] = idSelector;
+	if(limitMouse)
+		m_map[((unsigned int)(mousePosition.x / 32))][((unsigned int)(mousePosition.y / 32))] = idSelector;
 }
 
 void Map::draw(sf::RenderWindow& window, Texture& tileTexture) const
@@ -44,5 +58,6 @@ void Map::mainMap(const signed int idSelector, const bool inventoryOn, sf::Rende
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && idSelector >= 0)
 			PlaceTile(idSelector, window);
 	}
-	draw(window, tileTexture);
+	if(m_LimitMapX > 0 && m_LimitMapY > 0)
+		draw(window, tileTexture);
 }

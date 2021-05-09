@@ -14,9 +14,11 @@ public:
 	void changeFullScreen(sf::RenderWindow& window); // activate/deactivate fullscreen
 	sf::Color colorBackground() const;
 	void changeColorBackground(const sf::Color color);
+	void displayBackground(sf::RenderWindow& window) const;
 private:
 	bool m_fullscreen;
 	sf::Color m_colorBackground;
+	sf::RectangleShape m_background;
 };
 
 #endif

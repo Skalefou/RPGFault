@@ -10,7 +10,7 @@ class Inventory
 {
 public:
 	Inventory(const std::string fontFile);
-	void changeInventory(Screen &screen);
+	void changeInventory();
 	void changePage(const Texture &tileTexture);
 	unsigned int limitTileDraw(const Texture& tileTexture) const;
 	signed int ascendSelector() const;

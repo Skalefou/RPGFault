@@ -17,7 +17,7 @@ Inventory::Inventory(const std::string fontFile) : m_inventory(false), m_page(0)
 	m_textCursor.setFont(m_font);
 }
 
-void Inventory::changeInventory(Screen &screen)
+void Inventory::changeInventory()
 {
 	static bool ePress = false;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && !ePress) {
@@ -25,15 +25,8 @@ void Inventory::changeInventory(Screen &screen)
 		ePress = true;
 		if(m_inventory == true) 
 		{
-			sf::Color color(128, 128, 128, 128);
-			screen.changeColorBackground(color);
 			m_page = 0;
 			changeTextPage();
-		}
-		else
-		{
-			sf::Color color(0, 0, 0, 255);
-			screen.changeColorBackground(color);
 		}
 	}
 	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::E) && ePress)
@@ -156,9 +149,10 @@ void Inventory::displaySelector(sf::RenderWindow& window, Texture &tileTexture)
 
 void Inventory::inventoryMain(Screen& screen, sf::RenderWindow& window, Texture& tileTexture)
 {
-	changeInventory(screen);
+	changeInventory();
 	if (m_inventory)
 	{
+		screen.displayBackground(window);
 		changePage(tileTexture);
 		drawTile(tileTexture, window);
 		clickMouse(tileTexture, window);

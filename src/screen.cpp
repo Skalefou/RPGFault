@@ -1,6 +1,6 @@
 #include "screen.hpp"
 
-Screen::Screen(sf::RenderWindow& window, const std::string nameFileFont, sf::View& view) : m_fullscreen(false), m_colorBackground(0, 0, 0, 255)
+Screen::Screen(sf::RenderWindow& window, const std::string nameFileFont, sf::View& view) : m_fullscreen(false), m_colorBackground(0, 0, 0, 255), m_background(sf::Vector2f(0.f, 0.f))
 {
 	sf::Font font;
 	sf::Text text;
@@ -14,6 +14,8 @@ Screen::Screen(sf::RenderWindow& window, const std::string nameFileFont, sf::Vie
 	window.draw(text);
 	window.display();
 
+	m_background.setSize(sf::Vector2f(1920.f, 1080.f));
+	m_background.setFillColor(sf::Color(128, 128, 128, 192));
 }
 
 bool Screen::isFullscreen() const
@@ -37,12 +39,7 @@ void Screen::changeFullScreen(sf::RenderWindow& window)
 		f11Press = false;
 }
 
-sf::Color Screen::colorBackground() const
+void Screen::displayBackground(sf::RenderWindow& window) const
 {
-	return m_colorBackground;
-}
-
-void Screen::changeColorBackground(const sf::Color color)
-{
-	m_colorBackground = color;
+	window.draw(m_background);
 }

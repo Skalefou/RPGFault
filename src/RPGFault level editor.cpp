@@ -18,7 +18,7 @@ int main(void)
 	while (window.isOpen()) 
 	{
 		sf::sleep(sf::microseconds(16'666));
-		window.clear(screen.colorBackground());
+		window.clear(sf::Color::Black);
 		sf::Event event;
 		while (window.pollEvent(event)) 
 		{
