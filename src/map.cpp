@@ -13,7 +13,7 @@ sf::Vector2f Map::mousePositionWithScrolling(const sf::Vector2i localPosition, s
 	return mousePosition;
 }
 
-void Map::PlaceTile(const signed int idSelector, sf::RenderWindow& window)
+void Map::placeTile(const signed int idSelector, sf::RenderWindow& window)
 {
 	const sf::Vector2f mousePosition = mousePositionWithScrolling(sf::Mouse::getPosition(window), window);
 	const bool x = ((unsigned int)(mousePosition.x / 32) >= m_LimitMapX), y = ((unsigned int)(mousePosition.y / 32) >= m_LimitMapY), limitMouse = (mousePosition.x >= 0 && mousePosition.y >= 0 && mousePosition.x < 1920 && mousePosition.y < 1080);
@@ -43,6 +43,13 @@ void Map::PlaceTile(const signed int idSelector, sf::RenderWindow& window)
 		m_map[((unsigned int)(mousePosition.x / 32))][((unsigned int)(mousePosition.y / 32))] = idSelector;
 }
 
+void Map::deleteTile(sf::RenderWindow& window)
+{
+	const sf::Vector2f mousePosition = mousePositionWithScrolling(sf::Mouse::getPosition(window), window);
+	if ((unsigned int)(mousePosition.x / 32) < m_LimitMapX && (unsigned int)(mousePosition.y / 32) < m_LimitMapY)
+		placeTile(-1, window);
+}
+
 void Map::draw(sf::RenderWindow& window, Texture& tileTexture) const
 {
 	for (unsigned int x = 0; x < m_LimitMapX; x++)
@@ -56,8 +63,12 @@ void Map::mainMap(const signed int idSelector, const bool inventoryOn, sf::Rende
 	if (!(inventoryOn))
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && idSelector >= 0)
-			PlaceTile(idSelector, window);
+			placeTile(idSelector, window);
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+			deleteTile(window);
 	}
 	if(m_LimitMapX > 0 && m_LimitMapY > 0)
 		draw(window, tileTexture);
 }
+
+

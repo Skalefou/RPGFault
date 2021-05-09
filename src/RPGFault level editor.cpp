@@ -6,7 +6,6 @@
 
 int main(void) 
 {
-
 	sf::RenderWindow window(sf::VideoMode(1280, 720), WINDOW_NAME, sf::Style::Close);
 	sf::View view(sf::FloatRect(0, 0, 1920, 1080));
 	Screen screen(window, "data/Pixeled.ttf", view);

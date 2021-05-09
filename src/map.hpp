@@ -16,7 +16,8 @@ class Map
 public:
 	Map();
 	sf::Vector2f mousePositionWithScrolling(const sf::Vector2i localPosition, sf::RenderWindow& window) const;
-	void PlaceTile(const signed int idSelector, sf::RenderWindow &window);
+	void placeTile(const signed int idSelector, sf::RenderWindow &window);
+	void deleteTile(sf::RenderWindow &window);
 	void draw(sf::RenderWindow& window, Texture& tileTexture) const;
 	void mainMap(const signed int idSelector, const bool inventoryOn, sf::RenderWindow &window, Texture& tileTexture);
 private:
