@@ -39,4 +39,10 @@ int main(void)
 	return 0;
 }
 
-//TODO: Start the file backup system
+//TODO: 1-Create the "Fill" a selection with tile tool 
+//TODO: 2-Create a background editing tool 
+//TODO: 3-Start the file backup system
+//TODO: ---END---
+//TODO: 1-Using Threads
+//TODO: 2-Check for bugs
+//TODO: 3-Optimize the program  

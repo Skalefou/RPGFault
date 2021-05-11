@@ -1,7 +1,11 @@
 #include "map.hpp"
 
-Map::Map() : scrollingX(0), scrollingY(0), m_LimitMapX(0), m_LimitMapY(0)
+Map::Map() : scrollingX(0), scrollingY(0), m_LimitMapX(0), m_LimitMapY(0), m_selection(false), m_selectionRect(sf::Vector2f(50.f, 50.f))
 {
+	m_selectionRect.setFillColor(sf::Color(0, 0, 0, 0));
+	m_selectionRect.setOutlineThickness(3.f);
+	m_selectionRect.setOutlineColor(sf::Color(255, 255, 255));
+	m_selectionRect.setPosition(sf::Vector2f(64.f, 64.f));
 
 }
 
@@ -50,12 +54,50 @@ void Map::deleteTile(sf::RenderWindow& window)
 		placeTile(-1, window);
 }
 
-void Map::draw(sf::RenderWindow& window, Texture& tileTexture) const
+void Map::selectionTile(sf::RenderWindow& window)
+{
+	static bool unclick = false;
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
+	{
+		if (!(unclick))
+			m_firstSelection = sf::Mouse::getPosition(window);
+		unclick = true;
+	}
+	else if (unclick)
+	{
+		m_secondlySelection = sf::Mouse::getPosition(window);
+		if (((signed int)(m_firstSelection.x / 32) != (signed int)(m_secondlySelection.x / 32)) || ((signed int)(m_firstSelection.y / 32) != (signed int)(m_secondlySelection.y / 32)))
+			m_selection = true;
+		else
+			m_selection = false;
+		unclick = false;
+	}
+}
+
+void Map::drawTile(sf::RenderWindow& window, Texture& tileTexture) const
 {
 	for (unsigned int x = 0; x < m_LimitMapX; x++)
 		for (unsigned int y = 0; y < m_LimitMapY; y++)
 			if (m_map[x][y] >= 0)
 				tileTexture.draw(m_map[x][y], (float)((x * 32) - (scrollingX * 32)), (float)((y * 32) - (scrollingY * 32)), window);
+}
+
+
+
+void Map::drawSelection(sf::RenderWindow& window)
+{
+	static sf::Clock clock;
+	static bool color = true;
+	if (clock.getElapsedTime() > sf::milliseconds(750))
+	{
+		if (color)
+			m_selectionRect.setOutlineColor(sf::Color(0, 0, 0));
+		else
+			m_selectionRect.setOutlineColor(sf::Color(255, 255, 255));
+		color = !color;
+		clock.restart();
+	}
+	window.draw(m_selectionRect);
 }
 
 void Map::mainMap(const signed int idSelector, const bool inventoryOn, sf::RenderWindow& window, Texture& tileTexture)
@@ -66,9 +108,13 @@ void Map::mainMap(const signed int idSelector, const bool inventoryOn, sf::Rende
 			placeTile(idSelector, window);
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 			deleteTile(window);
+
+			selectionTile(window);
 	}
 	if(m_LimitMapX > 0 && m_LimitMapY > 0)
-		draw(window, tileTexture);
+		drawTile(window, tileTexture);
+	if(m_selection && !(inventoryOn))
+		drawSelection(window);
 }
 
 
