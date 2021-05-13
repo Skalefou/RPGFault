@@ -26,7 +26,7 @@ private:
 	std::vector<TILEPRESENT> m_tilePresent;
 	unsigned int m_LimitMapX, m_LimitMapY, scrollingX, scrollingY;
 	std::vector<std::vector<signed int>> m_map;
-	sf::Vector2i m_firstSelection, m_secondlySelection;
+	sf::Vector2f m_firstSelection, m_secondlySelection;
 	bool m_selection;
 	sf::RectangleShape m_selectionRect;
 };

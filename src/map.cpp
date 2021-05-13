@@ -1,12 +1,10 @@
 #include "map.hpp"
 
-Map::Map() : scrollingX(0), scrollingY(0), m_LimitMapX(0), m_LimitMapY(0), m_selection(false), m_selectionRect(sf::Vector2f(50.f, 50.f))
+Map::Map() : scrollingX(0), scrollingY(0), m_LimitMapX(0), m_LimitMapY(0), m_selection(false), m_selectionRect(sf::Vector2f(10.f, 10.f))
 {
 	m_selectionRect.setFillColor(sf::Color(0, 0, 0, 0));
 	m_selectionRect.setOutlineThickness(3.f);
 	m_selectionRect.setOutlineColor(sf::Color(255, 255, 255));
-	m_selectionRect.setPosition(sf::Vector2f(64.f, 64.f));
-
 }
 
 sf::Vector2f Map::mousePositionWithScrolling(const sf::Vector2i localPosition, sf::RenderWindow &window) const
@@ -60,14 +58,35 @@ void Map::selectionTile(sf::RenderWindow& window)
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
 	{
 		if (!(unclick))
-			m_firstSelection = sf::Mouse::getPosition(window);
+		{
+			sf::Vector2i firstSelection = sf::Mouse::getPosition(window);
+			m_firstSelection = window.mapPixelToCoords(firstSelection);
+		}
 		unclick = true;
 	}
 	else if (unclick)
 	{
-		m_secondlySelection = sf::Mouse::getPosition(window);
+		sf::Vector2i secondlySelection = sf::Mouse::getPosition(window);
+		m_secondlySelection = window.mapPixelToCoords(secondlySelection);
 		if (((signed int)(m_firstSelection.x / 32) != (signed int)(m_secondlySelection.x / 32)) || ((signed int)(m_firstSelection.y / 32) != (signed int)(m_secondlySelection.y / 32)))
+		{
+			
+			if (m_secondlySelection.x < m_firstSelection.x || m_secondlySelection.y < m_firstSelection.y)
+			{
+				m_secondlySelection.x -= 32;
+				m_firstSelection.x += 32;
+				m_secondlySelection.y -= 32;
+				m_firstSelection.y += 32;
+			}
+			signed int fx = (signed int)(m_firstSelection.x / 32);
+			signed int fy = (signed int)(m_firstSelection.y / 32);
+			signed int sx = (signed int)((m_secondlySelection.x / 32) + 1);
+			signed int sy = (signed int)((m_secondlySelection.y / 32) + 1);
+			m_selectionRect.setSize(sf::Vector2f((float)((sx - fx) * 32 - 3), (float)((sy - fy) * 32 - 3)));
+			m_selectionRect.setPosition(sf::Vector2f((float)(fx * 32 + 3), (float)(fy * 32 + 3)));
+
 			m_selection = true;
+		}
 		else
 			m_selection = false;
 		unclick = false;
@@ -88,7 +107,7 @@ void Map::drawSelection(sf::RenderWindow& window)
 {
 	static sf::Clock clock;
 	static bool color = true;
-	if (clock.getElapsedTime() > sf::milliseconds(750))
+	if (clock.getElapsedTime() >= sf::milliseconds(750))
 	{
 		if (color)
 			m_selectionRect.setOutlineColor(sf::Color(0, 0, 0));

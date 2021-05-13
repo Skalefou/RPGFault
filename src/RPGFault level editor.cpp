@@ -40,8 +40,9 @@ int main(void)
 }
 
 //TODO: 1-Create the "Fill" a selection with tile tool 
-//TODO: 2-Create a background editing tool 
-//TODO: 3-Start the file backup system
+//TODO: 2-Create a scrolling for the map 
+//TODO: 3-Create a background editing tool 
+//TODO: 4-Start the file backup system
 //TODO: ---END---
 //TODO: 1-Using Threads
 //TODO: 2-Check for bugs
